@@ -1,13 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="./src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bot Validation</title>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Set a flag to detect user interactions
+      let isHuman = false;
+
+      // Detect user mouse movement or keypress
+      document.addEventListener("mousemove", () => isHuman = true);
+      document.addEventListener("keypress", () => isHuman = true);
+
+      // Honeypot field check
+      const honeypotField = document.getElementById("honeypot");
+
+      // Validate after a short delay
+      setTimeout(() => {
+        if (isHuman && !honeypotField.value) {
+          // Redirect if the visit is valid
+          window.location.href = "https://www.example.com"; // Replace with your target URL
+        } else {
+          console.warn("Bot detected or invalid visit.");
+        }
+      }, 3000); // Adjust the delay as needed
+    });
+  </script>
+</head>
+<body>
+  <h1>Validating Request...</h1>
+  <p>You will be redirected shortly.</p>
+
+  <!-- Hidden Honeypot Field -->
+  <input type="text" id="honeypot" style="display: none;" autocomplete="off">
+</body>
 </html>
