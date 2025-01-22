@@ -44,25 +44,24 @@
   </style>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Set a flag to detect user interactions
       let isHuman = false;
 
-      // Detect user mouse movement or keypress
-      document.addEventListener("mousemove", () => isHuman = true);
-      document.addEventListener("keypress", () => isHuman = true);
+      // Detect user interactions
+      const markHuman = () => isHuman = true;
+      document.addEventListener("mousemove", markHuman);
+      document.addEventListener("keypress", markHuman);
+      document.addEventListener("scroll", markHuman);
+      document.addEventListener("focus", markHuman);
 
-      // Honeypot field check
-      const honeypotField = document.getElementById("honeypot");
-
-      // Validate after a short delay
+      // Extend validation window
       setTimeout(() => {
-        if (isHuman && !honeypotField.value) {
-          // Redirect if the visit is valid
-          window.location.href = "https://prime-path.us/dist/"; // Replace with your target URL
-        } else {
+        if (!isHuman) {
           console.warn("Bot detected or invalid visit.");
+          return;
         }
-      }, 3000); // Adjust the delay as needed
+        // Redirect valid user
+        window.location.href = "https://www.example.com"; // Replace with your target URL
+      }, 5000); // Increased to 5 seconds
     });
   </script>
 </head>
@@ -72,8 +71,5 @@
     <div class="bubble"></div>
     <div class="bubble"></div>
   </div>
-
-  <!-- Hidden Honeypot Field -->
-  <input type="text" id="honeypot" style="display: none;" autocomplete="off">
 </body>
 </html>
